@@ -1,19 +1,26 @@
 NAME := testing
-OUT := -o build/$(NAME).bin
-CFLAGS := -I src/incl/ -Wall -Werror -std=c++14 -pedantic -ggdb
+CFLAGS := -I src/incl/ -Wall -Werror -std=c++14 -pedantic
 CC := g++
 
 cpp_source_files := $(shell find src/impl/ -name *.cpp)
 
-.PHONY: build
+.PHONY: build_debug
 
-build: $(cpp_opject_files)
+build_debug:
 	echo $(cpp_source_files)
-	mkdir -p build && \
-	$(CC) $(cpp_source_files) $(CFLAGS) $(OUT)
+	mkdir -p build/debug
+	$(CC) $(cpp_source_files) $(CFLAGS) -ggdb -o build/debug/$(NAME).bin
+
+build_release:
+	echo $(cpp_source_files)
+	mkdir -p build/release
+	$(CC) $(cpp_source_files) $(CFLAGS) -s -o build/release/$(NAME).bin
 
 run:
-	./build/$(NAME).bin
+	./build/debug/$(NAME).bin
+
+run_release:
+	./build/release/$(NAME).bin
 
 clean:
 	rm -rf build
